@@ -19,7 +19,7 @@ const char* password = "NrLfSv7X7gpKPUUNEQ";
 //const char* ssid = "ciel-wifi-2";
 //const char* password = "ciel-wifi";
 
-String address_handle_answer = "http://192.168.1.100/handle_answer_test.php";
+String address_handle_answer = "http://192.168.1.100/fulcrum/handle_answer_test.php";
 //String address_handle_answer = "http://172.31.9.22/fulcrum/handle_answer_test.php";
 
 //payload id_user=1&answer_answer=2
@@ -121,20 +121,21 @@ void loop(void) {
 
   if (buttonState == LOW || start == 1 ) {
     int16_t value = 1111;
-    send_value(value);
     digitalWrite(3, HIGH);
-    delay(50);
-    //send_value(value);
-    //delay(50);
+    for(int i=0;i<10;i++){
+      send_value(value);
+      delay(50);
+    }
     start = 0;
 
   } else if (stop == 1) {
     //play = 0;
     int16_t value = 1010;
-    send_value(value);
-    delay(50);
-    //send_value(value);
-    //delay(50);
+    for(int i=0;i<10;i++){
+      send_value(value);
+      delay(50);
+    }
+
     digitalWrite(3, LOW);
     stop = 0;
   }
