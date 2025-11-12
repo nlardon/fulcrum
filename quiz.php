@@ -79,10 +79,11 @@ mysqli_close($conn); // Fermeture définitive de la connexion
         
         /* Conteneur principal */
         body { 
-            max-width: 600px; 
+            /*max-width: 1200px; */
             margin: 40px auto; 
             padding: 20px; 
-            border: 1px solid #ccc; 
+            border: 1px solid #ccc;
+            text-align: center;
         }
 
         /* Masquer le radio bouton par défaut */
@@ -152,7 +153,7 @@ mysqli_close($conn); // Fermeture définitive de la connexion
             <input type="hidden" name="id_question" value="<?php echo $question['id_question']; ?>">
             <input type="hidden" name="start_time_answer" value="<?php echo $start_time_answer; ?>">
 
-            <div class="question-text text-xl font-bold mb-5">
+            <div class="question-text text-4xl font-bold mb-5">
                 <?php echo htmlspecialchars($question['text_question']); ?>
             </div>
             <div class="question-image mb-5 text-center">
@@ -162,7 +163,7 @@ mysqli_close($conn); // Fermeture définitive de la connexion
             <fieldset id="answer-options-fieldset" disabled> 
                 <div class="answer-options flex flex-wrap gap-4">
                     
-                    <div class="answer-option-pair flex gap-4 w-full">
+                    <div class="answer-option-pair text-4xl flex gap-4 w-full">
                         <?php for ($i = 1; $i <= 2; $i++): ?>
                             <div class="answer-option flex-1 min-w-0">
                                 <input 
@@ -189,7 +190,7 @@ mysqli_close($conn); // Fermeture définitive de la connexion
                         <?php endfor; ?>
                     </div>
 
-                    <div class="answer-option-pair flex gap-4 w-full">
+                    <div class="answer-option-pair text-4xl flex gap-4 w-full">
                         <?php for ($i = 3; $i <= 4; $i++): ?>
                             <div class="answer-option flex-1 min-w-0">
                                 <input 
