@@ -1,6 +1,10 @@
 /*******************************************************************
 Remote : controller ID + Colors
 ********************************************************************/
+//Changelog
+// v11
+// add "parallel" exec of snake
+// non  add manual play_time
 
 #include <SPI.h>
 #include "nRF24L01.h"
@@ -33,7 +37,10 @@ int button_green = 5;
 int button_yellow = 7;
 int button_red = 6;
 int button_middle = 8;
+
 unsigned long currentMillis = 0;    // stores the value of millis() in each iteration of loop()
+unsigned long previousMillis = 0;
+int led = 0;
 
 
 void setup(void)
@@ -52,12 +59,14 @@ void setup(void)
 }
 
 void loop(void){
-//snake_led();
+  currentMillis = millis();
+  //Serial.println(currentMillis);
+ 
   while ( radio.available() ){
     radio.read( &dataR,  sizeof(dataR) );
     Serial.print("Message recu : "); Serial.print(dataR.id); Serial.print(" - "); Serial.println(dataR.ans); 
   }
-play_time = true;
+  //play_time = true; //to debug
   if(dataR.ans==1111){
   play_time = true;
   dataR.ans=0;
@@ -66,13 +75,11 @@ play_time = true;
   play_time = false;
   dataR.ans=0;
   }
+
   play();
 
-
   delay(10);
-
 }
-
 
 void send_value(int16_t a)
 {
@@ -93,7 +100,7 @@ void play(void)
 
     case true:
       snake_led();
-      stop_led();
+      //light_led();
       //int16_t b = 9;
       //send_value(b);
       if (!digitalRead(button_blue)) {answer = 1; play_time = false; send_value(answer);}
@@ -125,21 +132,41 @@ void stop_led(void)
 
 void snake_led(void)
 {
+  if(currentMillis - previousMillis < 100) {  
+    previousMillis += 100;
+    switch (led){
+      case 4:
+        leds[4] = CRGB::Blue;
+        leds[3] = CRGB::Black;
+        led = 0;
+        break;
+      case 0:
+        leds[0] = CRGB::Green;
+        leds[4] = CRGB::Black;
+        led = 1;
+        break;
+      case 3:
+        leds[3] = CRGB::Yellow;
+        leds[1] = CRGB::Black;
+        led = 4;
+        break;
+      case 1:
+        leds[1] = CRGB::Red;
+        leds[0] = CRGB::Black;
+        led = 3;
+        break;
+    }
+    FastLED.show();
+  }
+}
+
+void light_led(void)
+{
   leds[4] = CRGB::Blue;
-  leds[1] = CRGB::Black;
-  FastLED.show();
-  delay(100);
   leds[0] = CRGB::Green;
-  leds[4] = CRGB::Black;
-  FastLED.show();
-  delay(100);
   leds[3] = CRGB::Yellow;
-  leds[0] = CRGB::Black;
-  FastLED.show();
-  delay(100);
   leds[1] = CRGB::Red;
-  leds[3] = CRGB::Black;
   FastLED.show();
-  delay(100);
+  delay(10);
 }
 
